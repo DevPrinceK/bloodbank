@@ -46,35 +46,66 @@
                 {% endfor %}
             </div>
         </div>
-        {% elif request.user.request.is_patient %}
+        {% elif request.user.is_patient %}
         <div class="card-body">
-            <div class="p-2" style="color: blue;"><b>Blood Stock</b></div>
+            <div class="p-2" style="color: blue;"><b>Blood Request History</b></div>
             <hr>
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                {% for history in request_history %}
+                {% for blood in request_history %}
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-heading{{history.history_type}}">
+                    <h2 class="accordion-header" id="flush-heading{{blood.blood_request_id}}">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapse{{history.history_type}}" aria-expanded="false"
-                            aria-controls="flush-collapse{{history.history_type}}">
-                            <b>{{history.history_type}}</b>
+                            data-bs-target="#flush-collapse{{blood.blood_request_id}}" aria-expanded="false"
+                            aria-controls="flush-collapse{{blood.blood_request_id}}">
+                            <b>{{blood.blood_request_id}}</b>
                         </button>
                     </h2>
-                    <div id="flush-collapse{{history.history_type}}" class="accordion-collapse collapse"
-                        aria-labelledby="flush-heading{{history.history_type}}"
-                        data-bs-parent="#flush-parent{{history.history_type}}">
+                    <div id="flush-collapse{{blood.blood_request_id}}" class="accordion-collapse collapse"
+                        aria-labelledby="flush-heading{{blood.blood_request_id}}"
+                        data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
-                            <b>history Type: {{history.history_type}}</b> <br>
-                            <b>Total Quantity: {{history.total_quantity}}</b> <br>
-                            <b>Quantity Requested: {{history.requested_quantity}}</b> <br>
-                            <b>Approved Requests: {{history.approve_requested_quantity}}</b> <br>
-                            <b>Quantity Available: {{history.available_quantity}}</b> <br>
+                            <b>Request ID: {{history.blood_request_id}}</b> <br>
+                            <b>Request Quantity: {{history.quantity}}</b> <br>
+                            <b>Status: {{history.status}}</b> <br>
+                            <b>Date Requested: {{history.date_requested}}</b> <br>
+                            <b>Date Status Changed: {{history.date_approve_rejected}}</b> <br>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
+        {% comment %}
+        <div class="card-body">
+            <div class="p-2" style="color: blue;"><b>Blood Request History</b></div>
+            <hr>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                {% for blood in request_history %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-heading{{blood.blood_type}}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapse{{blood.blood_type}}" aria-expanded="false"
+                            aria-controls="flush-collapse{{blood.blood_type}}">
+                            <b>{{blood.blood_request_id}}</b>
+                        </button>
+                    </h2>
+                    <div id="flush-collapse{{blood.blood_type}}" class="accordion-collapse collapse"
+                        aria-labelledby="flush-heading{{blood.blood_type}}"
+                        data-bs-parent="#flush-parent{{blood.blood_type}}">
+                        <div class="accordion-body">
+                            <b>Request ID: {{history.blood_request_id}}</b> <br>
+                            <b>Request Quantity: {{history.quantity}}</b> <br>
+                            <b>Status: {{history.status}}</b> <br>
+                            <b>Date Requested: {{history.date_requested}}</b> <br>
+                            <b>Date Status Changed: {{history.date_approve_rejected}}</b> <br>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endcomment %}
+
         {% else %}
         <div class="card-body">
             <center>
