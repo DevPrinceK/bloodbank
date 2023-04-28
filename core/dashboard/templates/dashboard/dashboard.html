@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+{% load static %}
+{% load custom_filters %}
+
+<!-- chart js -->
+{% block charts %}
+<script src="{% static 'assets/js/dashboard_charts.js' %}"></script>
+{% endblock charts %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+    {% comment %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                    <p>Blood Requests Info</p>
+                    <canvas id="myChart" data-bloodInfo="{{ blood_type_info|json_encode }}"></canvas>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    {% endcomment %}
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="p-2" style="color: blue;"><b>Blood Stock</b></div>
+            <hr>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                {% for blood in blood_type_info %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-heading{{blood.blood_type}}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapse{{blood.blood_type}}" aria-expanded="false"
+                            aria-controls="flush-collapse{{blood.blood_type}}">
+                            <b>{{blood.blood_type}}</b>
+                        </button>
+                    </h2>
+                    <div id="flush-collapse{{blood.blood_type}}" class="accordion-collapse collapse"
+                        aria-labelledby="flush-heading{{blood.blood_type}}"
+                        data-bs-parent="#flush-parent{{blood.blood_type}}">
+                        <div class="accordion-body">
+                            <b>Blood Type: {{blood.blood_type}}</b> <br>
+                            <b>Total Quantity: {{blood.total_quantity}}</b> <br>
+                            <b>Quantity Requested: {{blood.requested_quantity}}</b> <br>
+                            <b>Approved Requests: {{blood.approve_requested_quantity}}</b> <br>
+                            <b>Quantity Available: {{blood.available_quantity}}</b> <br>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

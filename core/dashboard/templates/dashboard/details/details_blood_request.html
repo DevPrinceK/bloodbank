@@ -1,0 +1,159 @@
+{% extends "base/base.html" %}
+
+{% block title %} Blood Requests | {{blood_request.blood_request_id}} {% endblock %}
+{% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Blood Requests</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{blood_request.blood_request_id}}</li>
+            </ol>
+        </nav>
+        <h2 class="h4">{{blood_request.blood_request_id}}</h2>
+        <p class="mb-0">Details for the blood request {{blood_request.blood_request_id}}</p>
+    </div>
+
+    {% if perms.accounts.delete_user %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group ms-2 ms-lg-3">
+            <form action="{% url 'dashboard:delete_blood_request' %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="blood_request_id" value="{{blood_request.blood_request_id}}">
+                <button type="submit" class="btn btn-sm btn-outline-gray-600"><span
+                        class="fas fa-trash-alt me-2"></span>Delete Request</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive mb-4">
+    <div class="row">
+
+        <div class="col-4 mb-3">
+            <b>Request ID</b>
+            <p class="text-primary">{{blood_request.blood_request_id}}</p>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Request Form</b> <br>
+            <img src="{% if blood_request.request_form %} {{blood_request.request_form.url}} {% else %} {% static 'assets/img/icons/form.png' %} {% endif %}"
+                style="height: 80px; width: 80px; border-radius: 50%;" alt="">
+            <button type="button" class="btn btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#modal-default"><span
+                    class="fas fa-eye"></span></button>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Patient</b>
+            <p class="text-primary">{{blood_request.patient_profile.user.fullname}}</p>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Blood Type</b>
+            <p class="text-primary">{{blood_request.patient_profile.blood_type}}</p>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Status</b>
+            <p class="text-primary"> <span class="badge p-2"
+                    style="background-color: {{blood_request.get_status_color}};">{{blood_request.status}}</span> </p>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Quantity</b>
+            <p class="text-primary">{{blood_request.quantity}}</p>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Date Requested</b>
+            <p class="text-primary">{{blood_request.date_requested}}</p>
+        </div>
+
+        <div class="col-4 mb-3">
+            <b>Date Approved/Rejected</b>
+            <p class="text-primary">{{blood_request.date_approve_rejected}}</p>
+        </div>
+    </div>
+</div>
+
+{% if perms.dashboard.change_request_status %}
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="h4">Status</h2>
+            <form action="{% url 'dashboard:change_request_status' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="request_id" value="{{blood_request.id}}">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="request_status" value="PENDING"
+                        id="request_status1" {% if blood_request.status == 'PENDING' %} checked {% endif %}>
+                    <label class="form-check-label" for="request_status1">
+                        PENDING
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="request_status" value="APPROVED"
+                        id="request_status2" {% if blood_request.status == 'APPROVED' %} checked {% endif %}>
+                    <label class="form-check-label" for="request_status2">
+                        APPROVED
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="request_status" value="REJECTED"
+                        id="request_status2" {% if blood_request.status == 'REJECTED' %} checked {% endif %}>
+                    <label class="form-check-label" for="request_status2">
+                        REJECTED
+                    </label>
+                </div>
+                <div class="">
+                    <input type="submit" class="btn btn-sm btn-primary" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Modal Content -->
+<div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card-title">
+                    <h2 class="h6 modal-title">{{blood_request.blood_request_id}}</h2>
+                </div>
+                <img src="{% if blood_request.request_form %} {{blood_request.request_form.url}} {% else %} {% static 'assets/img/icons/form.png' %} {% endif %} "
+                    alt="" class="card-img-top" style="width: 100%; height:auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal Content -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
