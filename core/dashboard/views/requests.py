@@ -39,26 +39,25 @@ class CreateUpdateBloodRequestView(PermissionRequiredMixin, View):
 
     @method_decorator(MustLogin)
     def get(self, request, *args, **kwargs):
-        blood_request_id = request.GET.get('request_id') or None
-        if blood_request_id:
-            blood_request = BloodRequest.objects.filter(
-                blood_request_id=blood_request_id).first()
-            context = {
-                'blood_request': blood_request,
-            }
-            return render(request, self.template, context)
-        else:
-            return render(request, self.template)
+        request_id = request.GET.get('request_id')
+        blood_request = BloodRequest.objects.filter(blood_request_id=request_id).first()  # noqa
+        print(blood_request)
+        context = {
+            'blood_request': blood_request,
+        }
+        return render(request, self.template, context)
 
     @method_decorator(MustLogin)
     def post(self, request, *args, **kwargs):
         blood_request_id = request.POST.get('request_id')
         quantity = request.POST.get('quantity')
+        file = request.FILES.get('request_form') or None
         if blood_request_id:
             blood_request = BloodRequest.objects.filter(
                 blood_request_id=blood_request_id).first()
             if blood_request:
                 blood_request.quantity = quantity
+                blood_request.request_form = file
                 blood_request.save()
                 messages.success(request, 'Blood Request Updated Successfully')
             else:
@@ -69,6 +68,7 @@ class CreateUpdateBloodRequestView(PermissionRequiredMixin, View):
             blood_request = BloodRequest.objects.create(
                 patient_profile=patient_profile,
                 quantity=quantity,
+                request_form=file,
             )
             messages.success(request, 'Blood Request Created Successfully')
         return redirect('dashboard:blood_requests')
