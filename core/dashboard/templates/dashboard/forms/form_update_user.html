@@ -1,0 +1,52 @@
+<form action="{% url 'dashboard:create_update_user' %}" method="POST" style="border: 2px solid blue; padding: 30px;">
+    {% csrf_token %}
+    <fieldset>
+        <input type="hidden" name="user_id" value="{{user.id}}">
+        <legend>User creation/updation form</legend>
+        <!-- main form content -->
+        <div class="mb-4">
+            <label for="fullname">Fullname**</label>
+            <input type="text" class="form-control" name="fullname" value="{{user.fullname}}"
+                aria-describedby="fullnameHelp">
+        </div>
+        <div class="mb-4">
+            <label for="email">Email**</label>
+            <input type="email" class="form-control" name="email" value="{{user.email}}" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-4">
+            <label for="gender">Gender</label>
+            <select name="gender" name="gender" class="form-control">
+                <option value="Male" {% if user.gender == "Male" %} selected {% endif %}>Male</option>
+                <option value="Female" {% if user.gender == "Female" %} selected {% endif %}>Female</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" name="phone" value="{{user.phone}}" aria-describedby="phonehelp">
+        </div>
+        <div class="mb-4">
+            <h5>Groups</h5>
+            {% for group in groups %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="{{group.id}}" name="groups"
+                    id="group_id_{{group.id}}" {% if group.id in user.get_group_ids %} checked {% endif %}>
+                <label class="form-check-label" for="group_id_{{group.id}}">
+                    {{group.name}}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            <h5>Staff Member?</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" name="account_status"
+                    {% if user.is_staff %}checked{% endif %}>
+                <label for="account_status">Is A Staff Member?</label>
+            </div>
+        </div>
+        <hr>
+        <div class="mb-4">
+            <input type="submit" class="btn btn-sm btn-block btn-primary" value="Submit">
+        </div>
+    </fieldset>
+</form>

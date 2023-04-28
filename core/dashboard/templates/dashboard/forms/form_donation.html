@@ -1,0 +1,31 @@
+<form id="donation-form" action="{% url 'dashboard:create_update_donation' %}" method="POST"
+    style="border: 2px solid blue; padding: 30px 50px;">
+    {% csrf_token %}
+    <input type="hidden" name="donation_id" value="{{donation.donation_id}}">
+
+    <div class="mb-3">
+        <label for="donation-donor_id" class="form-label">Donor</label>
+        <select class="form-select" name="donor_id" id="donation-donor_id" required>
+            <option value="">Choose...</option>
+            {% for donor in donors %}
+            <option value="{{donor.id}}" {% if donor.id == donation.donor.id %} selected {% endif %}>{{donor.fullname}}
+            </option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="donation-date_time_created" class="form-label">Date of Donation</label>
+        <input type="datetime-local" name="date_time_donated" value="{{ donation.date_time_donated|date:'Y-m-d\TH:i' }}"
+            class="form-control" id="donation-date_time_donated">
+
+    </div>
+
+    <div class="mb-3">
+        <label for="donation-quantity" class="form-label">Quantity</label>
+        <input type="number" name="quantity" value="{{donation.quantity}}" class="form-control" id="donation-quantity"
+            step="0.1" min="0" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

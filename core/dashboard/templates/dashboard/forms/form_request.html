@@ -1,0 +1,16 @@
+<form id="donation-form" action="{% url 'dashboard:create_update_blood_request' %}" method="POST"
+    style="border: 2px solid blue; padding: 30px 50px;">
+    {% csrf_token %}
+    <input type="hidden" name="request_id" value="{{blood_request.id}}">
+
+    <div class="mb-3">
+        <label for="request-quantity" class="form-label">Quantity</label>
+        <input type="number" name="quantity" value="{{blood_request.quantity}}" class="form-control"
+            id="request-quantity" step="0.1" min="0" required>
+    </div>
+    <div class="mb-3">
+        <label for="request-request_form" class="form-label">Blood Request Form</label>
+        <input type="file" name="request_form" class="form-control" id="request-quantity" accept="image/*" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Make Request</button>
+</form>

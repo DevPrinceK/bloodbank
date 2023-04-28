@@ -1,0 +1,146 @@
+{% extends "base/base.html" %}
+
+{% block title %} Setup | User Permissions {% endblock %}
+{% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Setup</a></li>
+                <li class="breadcrumb-item active" aria-current="page">User</li>
+            </ol>
+        </nav>
+        <h2 class="h4">{{user.fullname|upper}}</h2>
+        <p class="mb-0">Groups and Permissions for {{user.fullname}}</p>
+    </div>
+
+    {% if perms.accounts.delete_user %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group ms-2 ms-lg-3">
+            <form action="{% url 'dashboard:delete_user' %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{user.id}}">
+                <button type="submit" class="btn btn-sm btn-outline-gray-600"><span
+                        class="fas fa-trash-alt me-2"></span>Delete User</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive mb-4">
+    <div class="row">
+        <div class="col-4 mb-3">
+            <b>User ID</b>
+            <p class="text-primary">{{user.id}}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Fullname</b>
+            <p class="text-primary">{{user.get_fullname}}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Account Type</b>
+            <p class="text-primary">{% if user.is_patient %} Patient {% elif user.is_staff %} Staff
+                {% elif user.is_superuser %}
+                Superuser {% else %} None {% endif %}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Total Groups</b>
+            <p class="text-primary">{{user.groups.count}}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Is Staff</b>
+            <p class="text-primary">{{user.is_staff}}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Is Superuser</b>
+            <p class="text-primary">{{user.is_superuser}}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Is Patient</b>
+            <p class="text-primary">{{user.is_patient}}</p>
+        </div>
+        <div class="col-4 mb-3">
+            <b>Total Permissions</b>
+            <p class="text-primary">{{user.user_permissions.count}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="h4">Groups</h2>
+        </div>
+        <div class="col-6">
+            <h2 class="h4">Permissions</h2>
+        </div>
+        <div class="col-6">
+            <form action="{% url 'dashboard:add_user_to_group' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{user.id}}">
+                {% for group in groups %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{group.id}}" name="groups"
+                        id="group_id_{{group.id}}" {% if group in saved_groups %} checked {% endif %}>
+                    <label class="form-check-label" for="perm_id_{{group.id}}">
+                        {{group.name}}
+                    </label>
+                </div>
+                {% endfor %}
+                <input type="hidden" name="group_id" value="{{group.id}}">
+
+                {% if perms.accounts.add_user_to_group %}
+                <button type="submit" class="mt-3 btn btn-sm btn-primary"><i class="bi bi-cloud-upload"
+                        style="margin-right: 10px;"></i>Save Groups</button>
+                {% endif %}
+
+            </form>
+        </div>
+        <div class="col-6">
+            <form action="{% url 'dashboard:add_perms_to_user' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{user.id}}">
+                {% for permission in permissions %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{permission.id}}" name="permissions"
+                        id="perm_id_{{permission.id}}" {% if permission in saved_permissions %} checked {% endif %}>
+                    <label class="form-check-label" for="perm_id_{{permission.id}}">
+                        {{permission.name}}
+                    </label>
+                </div>
+                {% endfor %}
+                <input type="hidden" name="group_id" value="{{group.id}}">
+
+                {% if perms.accounts.add_permission_to_user %}
+                <button type="submit" class="mt-3 btn btn-sm btn-primary"><i class="bi bi-cloud-upload"
+                        style="margin-right: 10px; border-style: none;"></i>Save Permissions</button>
+                {% endif %}
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

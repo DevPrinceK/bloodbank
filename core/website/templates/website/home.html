@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Blood Bank</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/assets/img/brand/logo-s.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/assets/img/brand/logo-s.png' %}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navbar {
+            background-color: #e74c3c;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: #fff;
+        }
+
+        .jumbotron {
+            background: url('https://source.unsplash.com/random/1920x1080?blood') no-repeat center center;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .jumbotron-text {
+            color: #fff;
+            max-width: 500px;
+            margin-left: 5%;
+        }
+
+        .jumbotron-text h1 {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        .jumbotron-text p {
+            font-size: 1.5rem;
+        }
+
+        footer {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <!-- <a class="navbar-brand" href="#">BloodBank</a> -->
+            <a class="navbar-brand" href="#">
+                <img src="{% static '/assets/img/brand/logo-w.png' %}" style="height: 50px; width: auto;"
+                    alt="OBBS logo" />
+            </a>
+            {% comment %}
+            <a href="javascript:void()" class="nav-link d-flex align-items-center">
+                <img src="{% static '/assets/img/brand/logo-w.png' %}" alt="OBBS logo" />
+            </a>
+            {% endcomment %}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div class="jumbotron-text">
+            <h1>Save Lives</h1>
+            <p>Donate blood and make a difference in someone's life. Join our online blood bank community today to
+                donate or to request for blood!</p>
+            <a href="{% url 'accounts:login' %}" class="btn btn-danger btn-lg">Get Started</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2023 Online Blood Bank. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery

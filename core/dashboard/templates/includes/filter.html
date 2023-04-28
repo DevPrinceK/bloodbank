@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-6">
+        <div class="py-4">
+            <!-- form for filtering queryset -->
+            <form action="" method="GET">
+                <div class="row">
+                    <div class="col-6 mx-0">
+                        <div class="input-group">
+                            <!-- <label for="">Parameter</label> -->
+                            <select name="q" id="q" class="form-select">
+                                <option value="Today" {% if query == 'today' %} selected {% endif %}>Today</option>
+                                <option value="Week" {% if query == 'week' %} selected {% endif %}>This Week</option>
+                                <option value="Month" {% if query == 'month' %} selected {% endif %}>This Month</option>
+                                <option value="Year" {% if query == 'year' %} selected {% endif %}>This Year</option>
+                                <option value="Time" {% if query == 'all' %} selected {% endif %}>All Time</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6 mx-0">
+                        <button class="btn btn-sm btn-primary">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

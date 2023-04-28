@@ -1,0 +1,71 @@
+<form id="signup-form" action="{% url 'dashboard:create_update_patient' %}" method="POST" enctype="multipart/form-data"
+    style="border: 2px solid blue; padding: 30px 50px;">
+    {% csrf_token %}
+    <input type="hidden" name="user_id" value="{{patient.user.id}}">
+    <input type="hidden" name="patient_id" value="{{patient.id}}">
+    <div class="mb-3">
+        <label for="signup-fullname" class="form-label">Full Name</label>
+        <input type="text" name="fullname" value="{{patient.user.fullname}}" class="form-control" id="signup-fullname"
+            required>
+    </div>
+    <div class="mb-3">
+        <label for="signup-email" class="form-label">Email</label>
+        <input type="email" name="email" value="{{patient.user.email}}" class="form-control" id="signup-email" required>
+    </div>
+    <div class="mb-3">
+        <label for="signup-phone" class="form-label">Phone</label>
+        <input type="tel" name="phone" value="{{patient.user.phone}}" class="form-control" id="signup-phone" required>
+    </div>
+    <div class="mb-3">
+        <label for="signup-gender" class="form-label">Gender</label>
+        <select class="form-select" name="gender" id="signup-gender" required>
+            <option value="">Choose...</option>
+            <option value="Male" {% if patient.user.gender == 'Male' %} selected {% endif %}>Male</option>
+            <option value="Female" {% if patient.user.gender == 'Female' %} selected {% endif %}>Female
+            </option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="signup-profile_image" class="form-label">Profile
+            Image</label>
+        <input type="file" name="profile_image" class="form-control" id="signup-profile_image" accept="image/*">
+    </div>
+    <div class="mb-3">
+        <label for="signup-blood_type" class="form-label">Blood
+            Type</label>
+        <select class="form-select" name="blood_type" id="signup-blood_type" required>
+            <option value="">Choose...</option>
+            <option value="A_POSITIVE" {% if patient.blood_type == 'A_POSITIVE' %} selected {% endif %}>A+</option>
+            <option value="A_NEGATIVE" {% if patient.blood_type == 'A_NEGATIVE' %} selected {% endif %}>A-</option>
+            <option value="B_POSITIVE" {% if patient.blood_type == 'B_POSITIVE' %} selected {% endif %}>B+</option>
+            <option value="B_NEGATIVE" {% if patient.blood_type == 'B_NEGATIVE' %} selected {% endif %}>B-</option>
+            <option value="AB_POSITIVE" {% if patient.blood_type == 'AB_POSITIVE' %} selected {% endif %}>AB+</option>
+            <option value="AB_NEGATIVE" {% if patient.blood_type == 'AB_NEGATIVE' %} selected {% endif %}>AB-</option>
+            <option value="O_POSITIVE" {% if patient.blood_type == 'O_POSITIVE' %} selected {% endif %}>O+</option>
+            <option value="O_NEGATIVE" {% if patient.blood_type == 'O_NEGATIVE' %} selected {% endif %}>O-</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="signup-dob" class="form-label">Date of
+            Birth</label>
+        <input type="date" name="dob" value="{{patient.dob|date:'Y-m-d'}}" class="form-control" id="signup-dob"
+            required>
+    </div>
+    <div class="mb-3">
+        <label for="signup-address" class="form-label">Address</label>
+        <textarea class="form-control" name="address" id="signup-address" rows="3"
+            required>{{patient.address}}</textarea>
+    </div>
+    <hr>
+    <div class="mb-3">
+        <label for="signup-password" class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" id="signup-password" {% if not patient %} required
+            {% endif %}>
+    </div>
+    <div class="mb-3">
+        <label for="signup-password2" class="form-label">Confirm Password</label>
+        <input type="password" name="password2" class="form-control" id="signup-password2" {% if not patient %} required
+            {% endif %}>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

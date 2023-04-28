@@ -1,0 +1,17 @@
+<form action="{% url 'dashboard:create_update_group' %}" style="border: 2px solid blue; padding: 30px 50px;"
+    method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="group_id" value="{{group.id}}">
+    <fieldset>
+        <legend>Group Creation/Updation Form</legend>
+        <!-- main form content -->
+        <div class="mb-4">
+            <label for="name">Group Name*</label>
+            <input type="text" class="form-control" name="name" value="{{group.name}}" aria-describedby="nameHelp"
+                required>
+        </div>
+        <div class="mb-4">
+            <input type="submit" class="btn btn-sm btn-block btn-primary" value="Submit">
+        </div>
+    </fieldset>
+</form>
