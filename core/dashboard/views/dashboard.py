@@ -7,6 +7,8 @@ from django.shortcuts import redirect, render
 from django.views import View
 from dashboard.models import Donation, Donor, PatientProfile, BloodRequest
 from django.db.models import Count, Sum, F, FloatField
+from core.utils.decorators import MustLogin
+from django.utils.decorators import method_decorator
 
 
 class DashboardView(View):
@@ -14,6 +16,7 @@ class DashboardView(View):
 
     template = 'dashboard/dashboard.html'
 
+    @method_decorator(MustLogin)
     def get(self, request, *args, **kwargs):
         # expired bloods
         expired_blood_count = Donation.objects.filter(
@@ -49,7 +52,7 @@ class DashboardView(View):
 
             available_quantity = float(
                 total_quantity) - float(approve_requested_quantity or 0)
-                
+
             blood_type_info.append({
                 'blood_type': blood_type,
                 'total_quantity': str(total_quantity or 0),
@@ -58,15 +61,17 @@ class DashboardView(View):
                 'available_quantity': str(available_quantity)
             })
 
-        print(blood_type_info)
-        print(blood_type_counts)
-        print(blood_types)
         # only display messages blood expiration message to staff and superusers
         if request.user.is_staff or request.user.is_superuser:
             messages.info(request, message)
+        request_history = BloodRequest.objects.filter(
+            patient_profile__user=request.user).order_by('-blood_request_id')
+
         context = {
             'blood_types': blood_types,
             'blood_type_counts': blood_type_counts,
             'blood_type_info': blood_type_info,
+            'request_history': request_history,
         }
+
         return render(request, self.template, context)
