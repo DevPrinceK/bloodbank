@@ -31,7 +31,7 @@
         <p class="mb-0">A list of all Blood Requests...</p>
     </div>
 
-
+    {% if perms.dashboard.add_bloodrequest %}
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group ms-2 ms-lg-3">
             <a href="{% url 'dashboard:create_update_blood_request' %}" class="btn btn-sm btn-outline-gray-600">
@@ -45,6 +45,7 @@
             </a>
         </div>
     </div>
+    {% endif %}
 </div>
 
 <div class="table-settings mb-4">
@@ -104,6 +105,7 @@
                 <td><span class="fw-normal">{{blood_request.date_requested}}</span></td>
                 <td>
                     <div class="btn-group">
+
                         <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="icon icon-sm">
@@ -111,12 +113,20 @@
                             </span>
                         </button>
                         <div class="dropdown-menu py-0">
+
+                            {% if perms.dashboard.change_bloodrequest %}
                             <a class="dropdown-item"
                                 href="{% url 'dashboard:create_update_blood_request' %}?request_id={{blood_request.id}}"><span
                                     class="fas fa-edit me-2"></span>Edit</a>
+                            {% endif %}
+
+                            {% if perms.dashboard.view_bloodrequest %}
                             <a class="dropdown-item"
                                 href="{% url 'dashboard:blood_request_detail' %}?request_id={{blood_request.id}}"><span
                                     class="fas fa-eye me-2"></span>View</a>
+                            {% endif %}
+
+                            {% if perms.dashboard.delete_bloodrequest %}
                             <form action="{% url 'dashboard:delete_blood_request' %}" method="POST"
                                 style="display: inline;">
                                 {% csrf_token %}
@@ -124,6 +134,7 @@
                                 <button type="submit" class="dropdown-item text-danger rounded-bottom"><span
                                         class="fas fa-trash-alt me-2"></span>Delete</button>
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                 </td>
