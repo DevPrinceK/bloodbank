@@ -109,7 +109,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 # Static files (CSS, JavaScript, Images)
-# CC
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles/'
 
@@ -124,3 +123,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# sms settings
+SMS_SENDER = "UPSA-OBBS"
+ARKESEL_API_KEY = 'OkhnOUlLV1FhSlpLQktXN0M='
