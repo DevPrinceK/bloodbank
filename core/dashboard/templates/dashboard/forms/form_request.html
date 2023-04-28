@@ -1,5 +1,5 @@
 <form id="donation-form" action="{% url 'dashboard:create_update_blood_request' %}" method="POST"
-    style="border: 2px solid blue; padding: 30px 50px;">
+    style="border: 2px solid blue; padding: 30px 50px;" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="request_id" value="{{blood_request.id}}">
 
